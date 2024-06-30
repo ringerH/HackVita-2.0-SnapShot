@@ -1,8 +1,9 @@
 import streamlit as st
 import cv2
 import numpy as np
+
 def main():
-    st.title("SnapShot: One Stop Solution For Surveillance")
+    st.title("SIFT Object Tracking in Video")
     st.sidebar.title("Upload Files")
     
     uploaded_image = st.sidebar.file_uploader("Upload an image (PNG or JPG)", type=["png", "jpg"])
@@ -10,8 +11,8 @@ def main():
 
     if uploaded_image and uploaded_video:
         st.sidebar.success("Files successfully uploaded!")
-        image = cv2.imdecode(np.fromstring(uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
-        video = cv2.VideoCapture(uploaded_video)
+        image = cv2.imdecode(np.frombuffer(uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        video = cv2.VideoCapture(np.frombuffer(uploaded_video.read(), np.uint8))
 
         st.header("Uploaded Image")
         st.image(image, caption="Uploaded Image", use_column_width=True)
@@ -29,7 +30,7 @@ def main():
         occurrence_duration = 0
         prev_matches = []
 
-        while video.isOpened():
+        while True:
             ret, frame = video.read()
             if not ret:
                 st.write("End of video reached.")
