@@ -1,8 +1,8 @@
 import streamlit as st
 import cv2
-
+import numpy as np
 def main():
-    st.title("SIFT Object Tracking in Video")
+    st.title("SnapShot: One Stop Solution For Surveillance")
     st.sidebar.title("Upload Files")
     
     uploaded_image = st.sidebar.file_uploader("Upload an image (PNG or JPG)", type=["png", "jpg"])
