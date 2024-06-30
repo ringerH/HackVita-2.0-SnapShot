@@ -1,6 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
+import tempfile
 
 def main():
     st.title("SIFT Object Tracking in Video")
@@ -11,8 +12,16 @@ def main():
 
     if uploaded_image and uploaded_video:
         st.sidebar.success("Files successfully uploaded!")
-        image = cv2.imdecode(np.frombuffer(uploaded_image.read(), np.uint8), cv2.IMREAD_COLOR)
-        video = cv2.VideoCapture(np.frombuffer(uploaded_video.read(), np.uint8))
+        
+        # Save the uploaded image to a temporary file
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as tmp:
+            tmp.write(uploaded_image.read())
+            image = cv2.imread(tmp.name)
+
+        # Save the uploaded video to a temporary file
+        with tempfile.NamedTemporaryFile(suffix='.mp4') as tmp:
+            tmp.write(uploaded_video.read())
+            video = cv2.VideoCapture(tmp.name)
 
         st.header("Uploaded Image")
         st.image(image, caption="Uploaded Image", use_column_width=True)
